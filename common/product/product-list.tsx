@@ -1,4 +1,5 @@
 import React from "react";
+import ProductCard from "./product-card";
 
 const ProductList = ({
   data,
@@ -16,7 +17,7 @@ const ProductList = ({
       {data.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {limitedData.map((product: any) => {
-            return <div>{product.name}</div>;
+            return <ProductCard product={product} key={product.slug} />;
           })}
         </div>
       ) : (
