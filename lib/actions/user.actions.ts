@@ -4,6 +4,7 @@ import { signInFormSchema, signUpFormSchema } from "../validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
+import { formatError } from "../utils";
 
 // Singin user with credentials
 export async function signInWithCredentials(
@@ -73,7 +74,7 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
     }
     return {
       success: false,
-      message: "User was not registerd",
+      message: formatError(error),
     };
   }
 }
