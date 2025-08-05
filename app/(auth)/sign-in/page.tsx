@@ -1,4 +1,5 @@
 import Logo from "@/common/Logo";
+import CredentialSigninForm from "@/components/auth/credentials-signin-form";
 import {
   Card,
   CardContent,
@@ -23,7 +24,10 @@ const SignInPage = () => {
             Sign in to your account
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">{/* Form Here */}</CardContent>
+        <CardContent className="space-y-4">
+          {/* Form Here */}
+          <CredentialSigninForm />
+        </CardContent>
       </Card>
     </div>
   );
