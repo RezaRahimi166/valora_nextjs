@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import Logo from "@/common/Logo";
 import CredentialSigninForm from "@/components/auth/credentials-signin-form";
 import {
@@ -8,12 +9,19 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadate: Metadata = {
   title: "Sign In",
 };
 
-const SignInPage = () => {
+const SignInPage = async () => {
+  const session = await auth();
+
+  if (session) {
+    return redirect("/");
+  }
+
   return (
     <div className="w-full max-w-md mx-auto">
       <Card>
