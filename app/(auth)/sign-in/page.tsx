@@ -15,11 +15,17 @@ export const metadate: Metadata = {
   title: "Sign In",
 };
 
-const SignInPage = async () => {
+const SignInPage = async (prosp: {
+  searchParams: Promise<{
+    callbackUrl: string;
+  }>;
+}) => {
+  const { callbackUrl } = await prosp.searchParams;
+
   const session = await auth();
 
   if (session) {
-    return redirect("/");
+    return redirect(callbackUrl || "/");
   }
 
   return (
