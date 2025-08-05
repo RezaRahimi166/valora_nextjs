@@ -11,7 +11,7 @@ import {
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-export const metadate: Metadata = {
+export const metadata: Metadata = {
   title: "Sign In",
 };
 
