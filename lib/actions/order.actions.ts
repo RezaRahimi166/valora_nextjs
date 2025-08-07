@@ -105,7 +105,7 @@ export async function getOrderById(orderId: string) {
     where: { id: orderId },
     include: {
       orderitems: true,
-      User: { select: { name: true, email: true } },
+      user: { select: { name: true, email: true } },
     },
   });
 
