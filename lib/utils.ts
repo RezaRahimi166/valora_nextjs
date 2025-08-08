@@ -21,24 +21,43 @@ export function formatNumberWithDecimal(num: number): string {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function formatError(error: any) {
-  if (error.name === "ZodError") {
-    // Handle Zod error
-    const fieldErrors = Object.keys(error.errors).map(
-      (field) => error.errors[field].message
-    );
-    return fieldErrors.join(". ");
+  // Normalize Zod errors (supports both issues[] and flatten formats)
+  if (error?.name === "ZodError" || Array.isArray(error?.issues)) {
+    if (Array.isArray(error?.issues)) {
+      return error.issues
+        .map((issue: { message: string }) => issue.message)
+        .join(". ");
+    }
+    if (typeof error?.flatten === "function") {
+      const { fieldErrors, formErrors } = error.flatten();
+      const messages = [
+        ...Object.values(fieldErrors || {}).flat(),
+        ...(formErrors || []),
+      ].filter(Boolean) as string[];
+      if (messages.length > 0) return messages.join(". ");
+    }
+    if (Array.isArray(error?.errors)) {
+      return error.errors.map((e: { message: string }) => e.message).join(". ");
+    }
   } else if (
-    error.name === "PrismaClientKnownRequestError" &&
-    error.code === "P2002"
+    error?.name === "PrismaClientKnownRequestError" &&
+    error?.code === "P2002"
   ) {
     // Handle Prisma Error
-    const field = error.meta?.target ? error.meta.target[0] : "Field";
+    const target = Array.isArray(error?.meta?.target)
+      ? error.meta.target[0]
+      : error?.meta?.target;
+    const field =
+      typeof target === "string" && target.length > 0 ? target : "Field";
     return `${field.charAt(0).toUpperCase() + field.slice(1)} already exist`;
   } else {
     // Habdle other Errors
-    return typeof error.message === "string"
-      ? error.message
-      : JSON.stringify(error.message);
+    if (typeof error?.message === "string") return error.message;
+    try {
+      return JSON.stringify(error);
+    } catch {
+      return "Unknown error";
+    }
   }
 }
 
