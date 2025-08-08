@@ -121,7 +121,7 @@ export async function createPayPalOrder(orderId: string) {
     const order = await prisma.order.findFirst({ where: { id: orderId } });
     if (order) {
       // Create paypal order
-      const paypalOrder = await paypal.createOrder(Number(order.taxPrice));
+      const paypalOrder = await paypal.createOrder(Number(order.totalPrice));
 
       // Update order with paypal order id
       await prisma.order.update({
