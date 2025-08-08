@@ -1,3 +1,4 @@
+import Pagination from "@/common/pagination/pagination";
 import {
   Table,
   TableBody,
@@ -67,6 +68,14 @@ const OrdersPage = async (props: {
             ))}
           </TableBody>
         </Table>
+        <div className="my-5">
+          {orders.totalPages > 1 && (
+            <Pagination
+              page={Number(page) || 1}
+              totalPages={orders?.totalPages}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
