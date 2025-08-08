@@ -16,7 +16,7 @@ export const paypal = {
         purchase_units: [
           {
             amount: {
-              curreny_code: "USD",
+              currency_code: "USD",
               value: price,
             },
           },
@@ -26,14 +26,14 @@ export const paypal = {
     return handleResponse(response);
   },
   capturePayment: async function capturePayment(orderId: string) {
-    const accesToken = await generateAccessToken();
+    const accessToken = await generateAccessToken();
     const url = `${base}/v2/checkout/orders/${orderId}/capture`;
 
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accesToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     return handleResponse(response);
