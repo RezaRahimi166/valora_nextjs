@@ -254,15 +254,18 @@ export async function getMyOrders({
   const session = await auth();
   if (!session) throw new Error("User is not authorized");
 
+  const userId = session.user?.id;
+  if (!userId) throw new Error("User is not authorized");
+
   const data = await prisma.order.findMany({
-    where: { userId: session?.user?.id! },
+    where: { userId },
     orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,
   });
 
   const dataCount = await prisma.order.count({
-    where: { userId: session?.user?.id! },
+    where: { userId },
   });
 
   return {
