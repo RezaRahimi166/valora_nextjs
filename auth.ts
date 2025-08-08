@@ -66,7 +66,8 @@ export const config = {
 
       // if there is an update, set the user name
       if (trigger === "update") {
-        session.user.name = user.name;
+        // Prefer token value on update to avoid relying on undefined user param
+        session.user.name = token.name ?? session.user.name;
       }
 
       return session;
@@ -76,6 +77,8 @@ export const config = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        // Ensure token name is always in sync on sign in
+        token.name = user.name ?? token.name;
 
         // if user has no name use the email
         if (user.name === "NO_NAME") {
@@ -113,8 +116,9 @@ export const config = {
         }
       }
       // handle session updates
-      if (session?.user.name && trigger === "update") {
-        token.name === session.user.name;
+      if (session?.user?.name && trigger === "update") {
+        // Persist updated name into the JWT so future sessions reflect it
+        token.name = session.user.name;
       }
 
       return token;
