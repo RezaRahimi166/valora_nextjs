@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import Charts from "@/components/(admin)/overview/charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -84,7 +85,9 @@ const OverviewPage = async () => {
           <CardHeader>
             <CardTitle>Overview</CardTitle>
           </CardHeader>
-          <CardContent>{/* Chart */}</CardContent>
+          <CardContent>
+            <Charts data={{ salesData: summary.salesData }} />
+          </CardContent>
         </Card>
         <Card className="col-span-3">
           <CardHeader>
