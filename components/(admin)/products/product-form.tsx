@@ -8,12 +8,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { productDefaultValues } from "@/lib/constants";
-import { insertProductSchema, updateProuctSchema } from "@/lib/validators";
+import { insertProductSchema, updateProductSchema } from "@/lib/validators";
 import { Product } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
-import z from "zod";
+import { z } from "zod";
 import slugify from "slugify";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,7 @@ const ProductForm = ({
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver:
       type === "Update"
-        ? zodResolver(updateProuctSchema)
+        ? zodResolver(updateProductSchema)
         : zodResolver(insertProductSchema),
     defaultValues:
       product && type === "Update" ? product : productDefaultValues,
