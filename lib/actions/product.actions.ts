@@ -5,7 +5,7 @@ import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "../constants";
 import { convertToPlainObject, formatError } from "../utils";
 import { revalidatePath } from "next/cache";
 import z from "zod";
-import { insertProductSchema, updateProuctSchema } from "../validators";
+import { insertProductSchema, updateProductSchema } from "../validators";
 
 // get latest products
 export async function getLatestProducts() {
@@ -22,6 +22,14 @@ export async function getProductBySlog(slug: string) {
   return await prisma.product.findFirst({
     where: { slug: slug },
   });
+}
+// Get Single Product by Id
+export async function getProductById(productId: string) {
+  const data = await prisma.product.findFirst({
+    where: { id: productId },
+  });
+
+  return convertToPlainObject(data);
 }
 
 // Get all products
@@ -88,9 +96,9 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
   }
 }
 // Create admin Product
-export async function updateProduct(data: z.infer<typeof updateProuctSchema>) {
+export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
   try {
-    const product = updateProuctSchema.parse(data);
+    const product = updateProductSchema.parse(data);
 
     const productExists = await prisma.product.findFirst({
       where: { id: product.id },

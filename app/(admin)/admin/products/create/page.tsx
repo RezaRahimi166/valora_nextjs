@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 const CreateProductPage = () => {
   return (
     <>
-      <h2 className="h2-bold">Create Product</h2>
-      <div className="my-8">
+      <div className="space-y-6 max-w-5xl mx-auto">
+        <h2 className="h2-bold">Create Product</h2>
         <ProductForm type="Create" />
       </div>
     </>

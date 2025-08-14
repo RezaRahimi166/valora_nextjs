@@ -60,7 +60,7 @@ const ProductForm = ({
     }
     // on Update
     if (type === "Update") {
-      if (productId) {
+      if (!productId) {
         router.push("/admin/products");
         return;
       }
