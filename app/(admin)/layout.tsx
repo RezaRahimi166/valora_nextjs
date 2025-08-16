@@ -1,7 +1,7 @@
 import Menu from "@/common/header/menu";
 import Logo from "@/common/Logo";
 import MainAdminNav from "@/components/(admin)/nav/main-nav";
-import { Input } from "@/components/ui/input";
+import AdminSearch from "@/components/(admin)/search/admin-search";
 
 export default function AdminLayout({
   children,
@@ -18,11 +18,7 @@ export default function AdminLayout({
             <MainAdminNav className="mx-6" />
             <div className="ml-auto items-center flex space-x-4">
               <div>
-                <Input
-                  type="search"
-                  placeholder="Search..."
-                  className="md:w-[100px] lg:w-[300px]"
-                />
+                <AdminSearch />
               </div>
               <Menu />
             </div>
