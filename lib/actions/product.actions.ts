@@ -6,6 +6,7 @@ import { convertToPlainObject, formatError } from "../utils";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 import { insertProductSchema, updateProductSchema } from "../validators";
+import { da } from "zod/v4/locales";
 
 // get latest products
 export async function getLatestProducts() {
@@ -118,4 +119,13 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
+}
+
+// Get all categories
+export async function getAllCategories() {
+  const data = await prisma.product.groupBy({
+    by: ["category"],
+    _count: true,
+  });
+  return data;
 }
