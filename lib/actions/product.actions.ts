@@ -6,7 +6,6 @@ import { convertToPlainObject, formatError } from "../utils";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 import { insertProductSchema, updateProductSchema } from "../validators";
-import { da } from "zod/v4/locales";
 import { Prisma } from "../generated/prisma";
 
 // get latest products
