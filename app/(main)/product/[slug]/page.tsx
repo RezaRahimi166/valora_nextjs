@@ -1,6 +1,8 @@
+import { auth } from "@/auth";
 import AddToCart from "@/common/product/add-to-cart";
 import ProductImages from "@/common/product/product-images";
 import ProductPrice from "@/common/product/product-price";
+import ReviewLists from "@/components/(main)/product/review-list";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { getMyCart } from "@/lib/actions/cart.actions";
@@ -14,6 +16,10 @@ const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
   const product = await getProductBySlog(slug);
 
   if (!product) notFound();
+
+  const session = await auth();
+
+  const userId = session?.user?.id;
 
   // get cart data
   const cart = await getMyCart();
@@ -84,6 +90,14 @@ const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
             </Card>
           </div>
         </div>
+      </section>
+      <section className="mt-10">
+        <h2 className="h2-bold">Customer Reviews</h2>
+        <ReviewLists
+          userId={userId || ""}
+          productId={product.id}
+          productSlug={product.slug}
+        />
       </section>
     </>
   );
