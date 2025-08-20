@@ -1,3 +1,4 @@
+import IconBoxes from "@/common/home/icon-boxes";
 import ProductCarousel from "@/common/product/product-carousel";
 import ProductList from "@/common/product/product-list";
 import ViewAllProducts from "@/common/product/view-all-product-button";
@@ -17,6 +18,7 @@ const HomePage = async () => {
       )}
       <ProductList data={latestProducts} title="Newest Arrivals" limit={4} />
       <ViewAllProducts />
+      <IconBoxes />
     </>
   );
 };
