@@ -27,7 +27,6 @@ import {
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { NullableCoordinate } from "recharts/types/util/types";
 import StripePayments from "./stripe-payment";
 
 const OrderTableDetails = ({
