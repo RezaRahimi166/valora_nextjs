@@ -1,3 +1,4 @@
+import DealCountdown from "@/common/home/deal-countdown";
 import IconBoxes from "@/common/home/icon-boxes";
 import ProductCarousel from "@/common/product/product-carousel";
 import ProductList from "@/common/product/product-list";
@@ -18,6 +19,7 @@ const HomePage = async () => {
       )}
       <ProductList data={latestProducts} title="Newest Arrivals" limit={4} />
       <ViewAllProducts />
+      <DealCountdown />
       <IconBoxes />
     </>
   );
