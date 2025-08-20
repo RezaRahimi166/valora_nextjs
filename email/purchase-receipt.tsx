@@ -1,3 +1,6 @@
+import sampleData from "@/db/sample-data";
+import { formatCurrency } from "@/lib/utils";
+import { Order } from "@/types";
 import {
   Body,
   Column,
@@ -12,13 +15,58 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
-import { Order } from "@/types";
-import { formatCurrency } from "@/lib/utils";
+require("dotenv").config();
 
-// dateFormatter
+PurchaseReceiptEmail.PreviewProps = {
+  order: {
+    id: crypto.randomUUID(),
+    userId: "123",
+    user: {
+      name: "John Doe",
+      email: "test@test.com",
+    },
+    paymentMethod: "Stripe",
+    shippingAddress: {
+      fullName: "John Doe",
+      streetAddress: "123 Main st",
+      city: "New York",
+      postalCode: "10001",
+      country: "US",
+    },
+    createdAt: new Date(),
+    totalPrice: "100",
+    taxPrice: "10",
+    shippingPrice: "10",
+    itemsPrice: "80",
+    orderitems: sampleData.products.map((x) => ({
+      name: x.name,
+      orderId: "123",
+      productId: "123",
+      slug: x.slug,
+      qty: x.stock,
+      image: x.images[0],
+      price: x.price.toString(),
+    })),
+    isDelivered: true,
+    deliveredAt: new Date(),
+    isPaid: true,
+    paidAt: new Date(),
+    paymentResult: {
+      id: "123",
+      status: "succeeded",
+      pricePaid: "100",
+      email_address: "test@test.com",
+    },
+  },
+} satisfies OrderInformationProps;
+
 const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 
-const PurchaseReceiptEmail = ({ order }: { order: Order }) => {
+type OrderInformationProps = {
+  order: Order;
+};
+
+export default function PurchaseReceiptEmail({ order }: OrderInformationProps) {
   return (
     <Html>
       <Preview>View order receipt</Preview>
@@ -26,18 +74,18 @@ const PurchaseReceiptEmail = ({ order }: { order: Order }) => {
         <Head />
         <Body className="font-sans bg-white">
           <Container className="max-w-xl">
-            <Heading>Purchase Recipet</Heading>
+            <Heading>Purchase Receipt</Heading>
             <Section>
               <Row>
                 <Column>
                   <Text className="mb-0 mr-4 text-gray-500 whitespace-nowrap text-nowrap">
-                    Order Id
+                    Order ID
                   </Text>
                   <Text className="mt-0 mr-4">{order.id.toString()}</Text>
                 </Column>
                 <Column>
                   <Text className="mb-0 mr-4 text-gray-500 whitespace-nowrap text-nowrap">
-                    Purchase Id
+                    Purchase Date
                   </Text>
                   <Text className="mt-0 mr-4">
                     {dateFormatter.format(order.createdAt)}
@@ -58,12 +106,12 @@ const PurchaseReceiptEmail = ({ order }: { order: Order }) => {
                 <Row key={item.productId} className="mt-8">
                   <Column className="w-20">
                     <Img
-                      width={"80"}
+                      width="80"
                       alt={item.name}
-                      className="rounded-md"
+                      className="rounded"
                       src={
                         item.image.startsWith("/")
-                          ? `${process.env.NEXT_PUBLIC_SERVER_URL} ${item.image}`
+                          ? `${process.env.NEXT_PUBLIC_SERVER_URL}${item.image}`
                           : item.image
                       }
                     />
@@ -77,22 +125,10 @@ const PurchaseReceiptEmail = ({ order }: { order: Order }) => {
                 </Row>
               ))}
               {[
-                {
-                  name: "Items",
-                  price: order.itemsPrice,
-                },
-                {
-                  name: "Tax",
-                  price: order.taxPrice,
-                },
-                {
-                  name: "Shipping",
-                  price: order.shippingPrice,
-                },
-                {
-                  name: "Toal",
-                  price: order.totalPrice,
-                },
+                { name: "Items", price: order.itemsPrice },
+                { name: "Tax", price: order.taxPrice },
+                { name: "Shipping", price: order.shippingPrice },
+                { name: "Total", price: order.totalPrice },
               ].map(({ name, price }) => (
                 <Row key={name} className="py-1">
                   <Column align="right">{name}: </Column>
@@ -107,6 +143,4 @@ const PurchaseReceiptEmail = ({ order }: { order: Order }) => {
       </Tailwind>
     </Html>
   );
-};
-
-export default PurchaseReceiptEmail;
+}
